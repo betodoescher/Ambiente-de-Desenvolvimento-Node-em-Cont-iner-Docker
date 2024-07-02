@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  dev-environment:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./develop:/root/develop
+    environment:
+      - AWS_ACCESS_KEY_ID=your_access_key_id
+      - AWS_SECRET_ACCESS_KEY=your_secret_access_key
+      - AWS_DEFAULT_REGION=your_default_region
+    ports:
+      - "3000:3000"
+    tty: true
+    networks:
+      - network
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: EcoTech
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  mysql-data:

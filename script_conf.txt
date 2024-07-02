@@ -1,0 +1,163 @@
+Beto, [6/30/23 1:59 PM]
+#!/bin/bash
+
+echo "Iniciando a instalação..."
+
+# Navegar para o diretório home
+cd ~
+
+# Atualizar o sistema
+sudo apt update && sudo apt upgrade -y
+
+echo "Instalando pacotes essenciais..."
+
+# Instalar pacotes essenciais
+sudo apt install -y build-essential curl git
+
+# Instalar o Zsh
+
+echo "Instalando o Zsh..."
+
+sudo apt install -y zsh
+
+echo "Definindo o Zsh como o shell padrão..."
+
+# Definir o Zsh como o shell padrão
+sudo chsh -s $(which zsh)
+
+echo "Instalando o Oh My Zsh..."
+
+# Instalar o Oh My Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+echo "Instalando o plugin de auto sugestão para o Zsh..."
+
+# Instalar o plugin de auto sugestão para o Zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# Configurar o arquivo .zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' ~/.zshrc
+
+echo "Instalando o NVM..."
+
+# Instalar o NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# Carregar o NVM
+source ~/.nvm/nvm.sh
+
+echo "Instalando o Node.js versão 16..."
+
+# Instalar o Node.js versão 16 usando o NVM
+nvm install 16
+
+# Definir o Node.js 16 como a versão padrão
+nvm use 16 --default
+
+echo "Configurando o Git..."
+
+# Configurar o Git
+git config --global user.name "Beto Doescher"
+git config --global user.email "betodoescher@gmail.com"
+
+echo "Configurando as chaves SSH..."
+
+# Configurar as chaves SSH
+ssh-keygen -t rsa -C "betodoescher@gmail.com" -b 4096 -f ~/.ssh/id_rsa_github
+
+# Copiar chave pública para o Github
+cat ~/.ssh/id_rsa_github.pub
+
+# Em seguida colar no painel do GitLab
+
+# Copiar chave pública para o GitLab
+cat ~/.ssh/id_rsa_gitlab.pub
+# Em seguida colar no painel do GitLab
+
+# Copiar chave pública para o Bitbucket
+cat ~/.ssh/id_rsa_bitbucket.pub
+# Em seguida colar no painel do Bitbucket
+
+# Adicionar chaves SSH ao agente SSH
+ssh-add ~/.ssh/id_rsa_github
+ssh-add ~/.ssh/id_rsa_gitlab
+ssh-add ~/.ssh/id_rsa_bitbucket
+
+# Caso mostrar mensagem "Could not open a connection to your authentication agent."
+eval ssh-agent -s
+
+echo "Configurando o arquivo de configuração SSH..."
+
+# Criar arquivo de configuração SSH
+touch ~/.ssh/config
+
+# Adicionar conteúdo ao arquivo de configuração SSH
+echo 'Host github.com
+  HostName github.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_rsa_github'
+
+
+echo "Configurando as credenciais do AWS CLI..."
+
+# Pré requisitos
+sudo apt install python python3-pip
+
+
+
+# Instalando AWS CLI
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&
+unzip awscliv2.zip &&
+sudo ./aws/install
+
+# Configurando credenciais
+aws configure
+
+
+echo "Instalando o Docker e o Docker Compose..."
+
+# Instalar o Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Adicionar o usuário ao grupo Docker
+sudo usermod -aG docker $USER
+
+# Instalar o Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&
+sudo chmod +x /usr/local/bin/docker-compose
+
+echo "Instalando o Terraform..."
+
+# Instalar o CLI do Terraform
+curl -LO "https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip" && unzip terraform_0.15.5_linux_amd64.zip && sudo mv terraform /usr/local/bin/ && rm terraform_0.15.5_linux_amd64.zip && terraform -v
+
+echo "Instalando o Terragrunt..."
+
+Beto, [6/30/23 1:59 PM]
+# Instalar o Terragrunt
+curl -LO "https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" &&
+chmod +x terragrunt_linux_amd64 &&
+sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt && terragrunt -v
+
+echo "Instalando o Google Chrome..."
+
+# Instalar o Google Chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+echo "Instalando o Telegram..."
+
+# Instalar o Telegram
+sudo snap install telegram-desktop
+
+echo "Instalando o Discord..."
+
+# Instalar o Discord
+sudo snap install discord
+
+
+echo "Configurações concluídas."
+
+# Fim do script
