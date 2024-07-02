@@ -11,7 +11,6 @@ Este repositório contém a configuração para um ambiente de desenvolvimento u
 - [Volumes](#volumes)
 - [Portas](#portas)
 - [SSH e Credenciais](#ssh-e-credenciais)
-- [Remoção de Configurações do Contêiner no VSCode](#remoção-de-configurações-do-contêiner-no-vscode)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
 
@@ -49,3 +48,46 @@ Para iniciar o ambiente de desenvolvimento, execute:
 
 ```bash
 docker-compose up
+```
+
+### Para acessar o contêiner em execução:
+
+```bash
+docker exec -it nome-do-servico-dev-environment bash
+```
+
+## Volumes
+
+Os volumes são utilizados para persistir dados e compartilhar arquivos entre o host e o contêiner. Neste repositório, configuramos um volume chamado develop para armazenar os microserviços:
+
+```bash
+volumes:
+  - ./develop:/root/develop
+```
+
+## Portas
+
+As portas configuradas para serem expostas estão definidas no arquivo docker-compose.yml. Por exemplo:
+
+```bash
+volumes:
+  - "3000:3000"
+  - "3200:3200"
+```
+
+## SSH e Credenciais
+
+As chaves SSH e configurações relacionadas são geradas e configuradas automaticamente durante a construção do contêiner. Veja o Dockerfile para mais detalhes.
+
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir um problema ou enviar um pull request.
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para obter mais informações.
+
+```bash
+Certifique-se de substituir `nome-do-servico-dev-environment` pelo nome real do seu serviço definido no `docker-compose.yml`.
+```
